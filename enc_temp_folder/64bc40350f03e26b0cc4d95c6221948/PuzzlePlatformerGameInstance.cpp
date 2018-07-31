@@ -33,7 +33,7 @@ void UPuzzlePlatformerGameInstance::Host()
 
 	if (!ensure(World != nullptr)) return;
 
-	World->ServerTravel("/Game/Maps/ThirdPersonExampleMap?listen");
+	World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
 
 
 
