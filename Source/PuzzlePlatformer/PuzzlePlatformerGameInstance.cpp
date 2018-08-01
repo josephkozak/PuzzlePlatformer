@@ -3,12 +3,20 @@
 #include "PuzzlePlatformerGameInstance.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
+#include "UObject/ConstructorHelpers.h"
 
+#include "PlatformTrigger.h"
 
 UPuzzlePlatformerGameInstance::UPuzzlePlatformerGameInstance(const FObjectInitializer & ObjectInitializer)
 {
 
+	ConstructorHelpers::FClassFinder<APlatformTrigger>  PlatformPawnClass(TEXT("/Game/BPS/PlatformTrigger_BP"));
+
 	UE_LOG(LogTemp, Warning, TEXT("Constructed GameInstance"));
+
+	if (!ensure(PlatformPawnClass.Class != nullptr)) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Found class %s"), *PlatformPawnClass.Class->GetName());
 
 }
 
