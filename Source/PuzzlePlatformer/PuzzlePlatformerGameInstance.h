@@ -4,13 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "MenuSystem/MenuInterface.h"
 #include "PuzzlePlatformerGameInstance.generated.h"
+
+
+class UUserWidget;
+class UMenuUserWidget;
 
 /**
  * 
  */
 UCLASS()
-class PUZZLEPLATFORMER_API UPuzzlePlatformerGameInstance : public UGameInstance
+class PUZZLEPLATFORMER_API UPuzzlePlatformerGameInstance : public UGameInstance, public IMenuInterface
 {
 	GENERATED_BODY()
 	
@@ -18,12 +23,28 @@ public:
 
 	UPuzzlePlatformerGameInstance(const FObjectInitializer & ObjectInitializer);
 
-	void Init();
+	virtual void Init();
 
 	UFUNCTION(exec)
-	void Host();
+	virtual void Host() override;
 
 	UFUNCTION(exec)
-	void Join(const FString& Address);
+	virtual void Join(const FString& Address) override;
+
+	virtual void BackToMenu() override;
+
+	UFUNCTION(Exec, BlueprintCallable)
+	void LoadMenu();
+
+	UFUNCTION(Exec, BlueprintCallable)
+	void LoadGameMenu();
+
+	TSubclassOf<UUserWidget> MenuClass;
+	TSubclassOf<UUserWidget> GameMenuClass;
+
 	
+private:
+
+	UMenuUserWidget * MainMenu;
+
 };
