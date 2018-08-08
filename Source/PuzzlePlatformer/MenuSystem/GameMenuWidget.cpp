@@ -14,14 +14,6 @@ void UGameMenuWidget::OnQuitButtonClicked()
 
 	if (!ensure(PlayerController != nullptr)) return;
 
-	if (PlayerController->Role != ROLE_Authority) {
-
-		DestroyMenu();
-		return;
-
-	}
-
-
 	MenuInterface->BackToMenu();
 
 

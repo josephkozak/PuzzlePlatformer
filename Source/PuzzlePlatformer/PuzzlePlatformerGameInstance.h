@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "MenuSystem/MenuInterface.h"
+#include "OnlineSubsystem.h"
 #include "PuzzlePlatformerGameInstance.generated.h"
 
 
 class UUserWidget;
 class UMenuUserWidget;
+class FOnlineSessionSearch;
 
 /**
  * 
@@ -31,10 +33,12 @@ public:
 	UFUNCTION(exec)
 	virtual void Join(const FString& Address) override;
 
+
+
 	virtual void BackToMenu() override;
 
 	UFUNCTION(Exec, BlueprintCallable)
-	void LoadMenu();
+	void LoadMenuWidget();
 
 	UFUNCTION(Exec, BlueprintCallable)
 	void LoadGameMenu();
@@ -47,4 +51,18 @@ private:
 
 	UMenuUserWidget * MainMenu;
 
+	IOnlineSessionPtr SessionInterface;
+
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+
+	void CreateSession();
+
+	UFUNCTION()
+	void OnCreateSessionComplete(FName SessionName, bool bSuccess);
+	
+	UFUNCTION()
+	void OnDestroySessionComplete(FName SessionName, bool bSuccess);
+
+	UFUNCTION()
+	void OnFindSessionsComplete( bool bSuccess);
 };
