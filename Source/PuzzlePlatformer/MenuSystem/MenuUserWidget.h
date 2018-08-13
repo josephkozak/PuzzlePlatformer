@@ -11,6 +11,23 @@ class UButton;
 class UEditableTextBox;
 class UPuzzlePlatformerGameInstance;
 class UWidgetSwitcher;
+class UScrollBox;
+
+USTRUCT()
+struct FServerInfo {
+
+	GENERATED_BODY()
+
+
+	FString ServerName;
+	
+	FString HostingPlayerName;
+
+	uint8 NumPlayers;
+	uint8 MaxPlayers;
+
+
+};
 
 /**
  * 
@@ -20,6 +37,16 @@ class PUZZLEPLATFORMER_API UMenuUserWidget : public UBaseMenuWidget
 {
 	GENERATED_BODY()
 
+
+public:
+
+	UMenuUserWidget(const FObjectInitializer & ObjectInitializer);
+
+	TSubclassOf<UUserWidget> TextBlockClass;
+
+	void SetServerList(TArray<FServerInfo> Servers);
+
+	void SelectIndex(uint32 Index);
 
 protected:
 
@@ -37,22 +64,40 @@ private:
 	UButton* BackButton;
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* HostBack;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* QuitButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* RefreshButton;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinServer;
 
 	UPROPERTY(meta = (BindWidget))
-	UEditableTextBox* IPAddress;
+	UButton* CreateGame;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* ServerName;
 
 	UPROPERTY(meta = (BindWidget))
 	UWidgetSwitcher* MenuSwitcher;
 
 	UPROPERTY(meta = (BindWidget))
+	UScrollBox* ServerAddresses;
+
+	UPROPERTY(meta = (BindWidget))
 	class UWidget* JoinMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* HostMenu;
 
 	UFUNCTION()
 	void OnHostButtonClicked();
+
+	UFUNCTION()
+	void OnCreateGameButtonClicked();
 
 	UFUNCTION()
 	void OnJoinButtonClicked();
@@ -64,7 +109,14 @@ private:
 	void OnQuitButtonClicked();
 
 	UFUNCTION()
+	void OnRefreshButtonClicked();
+
+	UFUNCTION()
 	void OnJoinServerButtonClicked();
+
+	void UpdateChildren();
+
+	TOptional<uint32> SelectedIndex;
 	
 	
 };

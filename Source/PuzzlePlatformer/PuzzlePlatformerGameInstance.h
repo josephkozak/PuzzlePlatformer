@@ -4,15 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "MenuSystem/MenuInterface.h"
 #include "OnlineSubsystem.h"
+#include "OnlineSessionInterface.h"
+
+#include "MenuSystem/MenuInterface.h"
 #include "PuzzlePlatformerGameInstance.generated.h"
+
+
 
 
 class UUserWidget;
 class UMenuUserWidget;
 class FOnlineSessionSearch;
-
 /**
  * 
  */
@@ -28,14 +31,20 @@ public:
 	virtual void Init();
 
 	UFUNCTION(exec)
-	virtual void Host() override;
+	virtual void Host(FText Name) override;
 
 	UFUNCTION(exec)
-	virtual void Join(const FString& Address) override;
+	virtual void Join(uint32 Index) override;
 
+	//virtual TArray<FServerInfo> GetServerList() override;
+	
+	virtual void FindServers() override;
 
+	virtual void RefreshServerList() override;
 
 	virtual void BackToMenu() override;
+
+	void StartGame();
 
 	UFUNCTION(Exec, BlueprintCallable)
 	void LoadMenuWidget();
@@ -46,7 +55,6 @@ public:
 	TSubclassOf<UUserWidget> MenuClass;
 	TSubclassOf<UUserWidget> GameMenuClass;
 
-	
 private:
 
 	UMenuUserWidget * MainMenu;
@@ -55,7 +63,9 @@ private:
 
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 
-	void CreateSession();
+	void CreateSession(FText Name);
+
+	FText CurrentServerName;
 
 	UFUNCTION()
 	void OnCreateSessionComplete(FName SessionName, bool bSuccess);
@@ -63,6 +73,9 @@ private:
 	UFUNCTION()
 	void OnDestroySessionComplete(FName SessionName, bool bSuccess);
 
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Results);
+
 	UFUNCTION()
 	void OnFindSessionsComplete( bool bSuccess);
+
 };
